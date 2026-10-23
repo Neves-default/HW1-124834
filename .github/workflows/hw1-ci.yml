@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: HW1-124834
+        working-directory: .
     steps:
       - uses: actions/checkout@v4
 
@@ -33,4 +33,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: jacoco-report
-          path: HW1-124834/target/site/jacoco
+          path: target/site/jacoco
