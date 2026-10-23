@@ -30,7 +30,7 @@ jobs:
 
       - name: Upload JaCoCo coverage report
         if: always()
-        uses: HW1-124834/actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4
         with:
           name: jacoco-report
-          path: target/site/jacoco
+          path: HW1-124834/target/site/jacoco
