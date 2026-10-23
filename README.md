@@ -89,3 +89,4 @@ Test doubles: `FakeLockerHardware` (fake, hardware port), `RecordingNotifier` (f
 `FakeGeocoder` (fake, geocoding port), `MutableClock` (controllable time), WireMock (stub HTTP server),
 Mockito mocks in `StationServiceTest`.
 # HW1-124834
+# HW1-124834
