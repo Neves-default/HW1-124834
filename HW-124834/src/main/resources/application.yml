@@ -22,7 +22,9 @@ tuttibox:
     length: 6
     max-attempts: 5       # consecutive wrong codes before the terminal is blocked
     lockout: 2m
-    secret: change-me-in-production   # HMAC key used to store pickup codes
+    secret: ${TUTTIBOX_PICKUPCODE_SECRET:dev-only-secret-not-for-production}   # HMAC key used to store pickup codes
+    # run openssl rand -base64 32 to generate a key and then define in the environment variable
+    # TUTTIBOX_PICKUPCODE_SECRET=a_chave_gerada
   allocation:
     allow-larger-size: true            # S -> M -> L when the exact size is full
   search:
@@ -33,7 +35,7 @@ tuttibox:
     timeout: 5s
     min-interval: 1s                   # Nominatim policy: max 1 request per second
     failure-cache-ttl: 60s             # a failed lookup is not retried for the same address within this window
-    user-agent: "TuttiBox/1.0 (TQS student project, University of Aveiro; contact: your-email@ua.pt)"
+    user-agent: "TuttiBox/1.0 (TQS student project, University of Aveiro; contact: joaomneves@ua.pt)"
   scheduler:
     deadline-check-ms: 60000
 
