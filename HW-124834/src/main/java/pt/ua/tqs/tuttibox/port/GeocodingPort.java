@@ -4,7 +4,7 @@ import pt.ua.tqs.tuttibox.domain.Coordinates;
 
 import java.util.Optional;
 
-/** Converts a written address into coordinates */
+/** Converts a written address into coordinates. */
 public interface GeocodingPort {
 
     /**
