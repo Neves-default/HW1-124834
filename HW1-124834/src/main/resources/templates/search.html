@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Find a locker - TuttiBox')}"></head>
+<body>
+<header th:replace="~{fragments :: header}"></header>
+<main>
+    <h1>Find a locker</h1>
+    <form method="get" th:action="@{/search}">
+        <label for="address">Address</label>
+        <input id="address" name="address" type="text" th:value="${address}" required autocomplete="street-address">
+        <button type="submit">Search</button>
+    </form>
+
+    <p class="msg error" role="alert" data-testid="search-error" th:if="${error}" th:text="${error}">Error</p>
+
+    <table data-testid="results" th:if="${results != null and !results.isEmpty()}">
+        <caption>Nearest stations and free compartments per size</caption>
+        <thead>
+        <tr><th scope="col">Station</th><th scope="col">Distance</th><th scope="col">Free S</th><th scope="col">Free M</th><th scope="col">Free L</th></tr>
+        </thead>
+        <tbody>
+        <tr th:each="s : ${results}" data-testid="station-row">
+            <td><span th:text="${s.name()}">Station</span><br><small th:text="${s.address()}">Address</small></td>
+            <td th:text="|${#numbers.formatDecimal(s.distanceKm(), 1, 2)} km|">0.00 km</td>
+            <td th:text="${s.freeS()}">0</td>
+            <td th:text="${s.freeM()}">0</td>
+            <td th:text="${s.freeL()}">0</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <p class="attribution">Address search by Nominatim. Map data
+        <a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>.</p>
+</main>
+</body>
+</html>

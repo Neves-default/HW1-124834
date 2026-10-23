@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: tuttibox
+  datasource:
+    url: jdbc:postgresql://localhost:5432/tuttibox
+    username: tuttibox
+    password: tuttibox
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+
+server:
+  port: 8080
+
+tuttibox:
+  seed-demo-data: true
+  deadlines:
+    drop-off: 5d          # time the courier has after registration
+    pickup: 5d            # time the recipient has after drop-off
+  pickup-code:
+    length: 6
+    max-attempts: 5       # consecutive wrong codes before the terminal is blocked
+    lockout: 2m
+    secret: ${TUTTIBOX_PICKUPCODE_SECRET:dev-only-secret-not-for-production}   # HMAC key used to store pickup codes
+    # run openssl rand -base64 32 to generate a key and then define in the environment variable
+    # TUTTIBOX_PICKUPCODE_SECRET=a_chave_gerada
+  allocation:
+    allow-larger-size: true            # S -> M -> L when the exact size is full
+  search:
+    max-results: 5
+  geocoding:
+    provider: nominatim                # nominatim | stub | off
+    base-url: https://nominatim.openstreetmap.org
+    timeout: 5s
+    min-interval: 1s                   # Nominatim policy: max 1 request per second
+    failure-cache-ttl: 60s             # a failed lookup is not retried for the same address within this window
+    user-agent: "TuttiBox/1.0 (TQS student project, University of Aveiro; contact: joaomneves@ua.pt)"
+  scheduler:
+    deadline-check-ms: 60000
+
+logging:
+  level:
+    pt.ua.tqs.tuttibox: INFO
+    tuttibox.notifications: INFO
