@@ -1,0 +1,36 @@
+# GitHub Actions: builds HW1 and runs all tests (unit, integration with Testcontainers, Cucumber)
+# on every push and pull request that touches the HW1 folder.
+name: HW1 CI
+
+on:
+  push:
+    paths: ["HW1-124834/**", ".github/workflows/hw1-ci.yml"]
+  pull_request:
+    paths: ["HW1-124834/**", ".github/workflows/hw1-ci.yml"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: HW1-124834
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+
+      # Docker is available on GitHub runners, so Testcontainers starts PostgreSQL by itself.
+      - name: Build and run all tests
+        run: mvn -B verify
+
+      - name: Upload JaCoCo coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jacoco-report
+          path: HW1-124834/target/site/jacoco
