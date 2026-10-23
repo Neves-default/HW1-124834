@@ -1,7 +1,0 @@
-# Used by the k6 load test: the geocoding provider is stubbed (never call Nominatim under load).
-tuttibox:
-  geocoding:
-    provider: stub
-logging:
-  level:
-    pt.ua.tqs.tuttibox: WARN
