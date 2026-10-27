@@ -5,30 +5,35 @@
 <header th:replace="~{fragments :: header}"></header>
 <main>
     <h1>Track a parcel</h1>
-    <form method="get" th:action="@{/track}">
+    <p class="lead">Enter the tracking code you received from the shop.</p>
+
+    <form class="card" method="get" th:action="@{/track}">
         <label for="code">Tracking code</label>
-        <input id="code" name="code" type="text" th:value="${code}" required>
-        <button type="submit">Track</button>
+        <div class="form-row">
+            <input id="code" name="code" type="text" th:value="${code}" required placeholder="e.g. TBX-ABCD1234">
+            <button type="submit">Track</button>
+        </div>
     </form>
 
     <p class="msg error" role="alert" data-testid="track-error" th:if="${error}" th:text="${error}">Error</p>
 
-    <section th:if="${parcel}" data-testid="tracking">
-        <h2 th:text="|Parcel ${parcel.trackingCode()}|">Parcel</h2>
-        <p>Current state: <strong data-testid="tracking-state" th:text="${parcel.state()}">STATE</strong></p>
-        <p>Station: <span th:text="${parcel.stationName()}">Station</span></p>
-        <table>
-            <caption>History</caption>
-            <thead><tr><th scope="col">When (UTC)</th><th scope="col">From</th><th scope="col">To</th><th scope="col">By</th></tr></thead>
-            <tbody>
-            <tr th:each="t : ${parcel.history()}">
-                <td th:text="${t.at()}">time</td>
-                <td th:text="${t.from()} ?: '-'">from</td>
-                <td th:text="${t.to()}">to</td>
-                <td th:text="${t.actor()}">actor</td>
-            </tr>
-            </tbody>
-        </table>
+    <section class="card" th:if="${parcel}" data-testid="tracking" style="margin-top: 1.5rem;">
+        <div class="parcel-head">
+            <h2 th:text="|Parcel ${parcel.trackingCode()}|">Parcel</h2>
+            <p style="margin: 0;">Current state:
+                <strong th:class="|badge ${parcel.state()}|" data-testid="tracking-state" th:text="${parcel.state()}">STATE</strong></p>
+        </div>
+        <p class="meta">Station: <span th:text="${parcel.stationName()}">Station</span> · Size: <span th:text="${parcel.size()}">M</span></p>
+
+        <h3 class="sr-only">History</h3>
+        <ol class="timeline">
+            <li th:each="t : ${parcel.history()}">
+                <span th:if="${t.from()}" th:text="|${t.from()} →|">FROM →</span>
+                <strong th:text="${t.to()}">STATE</strong>
+                <span th:text="|by ${t.actor()}|">by ACTOR</span>
+                <div class="when" th:text="|${t.at().toString().substring(0, 16).replace('T', ' ')} UTC|">time</div>
+            </li>
+        </ol>
     </section>
 </main>
 </body>

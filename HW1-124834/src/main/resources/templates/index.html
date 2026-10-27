@@ -4,28 +4,42 @@
 <body>
 <header th:replace="~{fragments :: header}"></header>
 <main>
-    <h1>TuttiBox parcel lockers</h1>
-    <p>Choose a locker station instead of a home address and collect your parcel whenever it suits you.</p>
-    <ul>
-        <li><a th:href="@{/search}">Find a locker near you</a></li>
-        <li><a th:href="@{/track}">Track a parcel</a></li>
-    </ul>
+    <section class="hero">
+        <div>
+            <h1>Your parcel, at a locker near you</h1>
+            <p class="lead">Choose a TuttiBox station instead of a home address and collect your parcel
+                whenever it suits you, with a single-use pickup code.</p>
+        </div>
+        <div class="actions">
+            <a class="card action" th:href="@{/search}">
+                <span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg></span>
+                <span><strong>Find a locker near you</strong><span>Search by address and see free compartments</span></span>
+            </a>
+            <a class="card action" th:href="@{/track}">
+                <span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7.5 12 3l9 4.5v9L12 21l-9-4.5z"/><path d="M3 7.5 12 12l9-4.5M12 12v9"/></svg></span>
+                <span><strong>Track a parcel</strong><span>Follow every step with its date and time</span></span>
+            </a>
+        </div>
+    </section>
+
+    <h2>How it works</h2>
+    <ol class="steps">
+        <li class="card"><strong>Choose a station</strong><span>Pick the most convenient locker when you order.</span></li>
+        <li class="card"><strong>We deliver it</strong><span>A courier deposits your parcel and you get a pickup code.</span></li>
+        <li class="card"><strong>Collect it</strong><span>Type your code at the locker terminal and the door opens.</span></li>
+    </ol>
 
     <h2>Stations</h2>
-    <table>
-        <caption>Locker stations, their terminal and operator pages</caption>
-        <thead>
-        <tr><th scope="col">Station</th><th scope="col">Address</th><th scope="col">Terminal</th><th scope="col">Operator</th></tr>
-        </thead>
-        <tbody>
-        <tr th:each="s : ${stations}">
-            <td th:text="${s.name()}">Station</td>
-            <td th:text="${s.address()}">Address</td>
-            <td><a th:href="@{/terminal/{id}(id=${s.id()})}" th:text="|Terminal at ${s.name()}|">Terminal</a></td>
-            <td><a th:href="@{/operator/{id}(id=${s.id()})}" th:text="|Operator page for ${s.name()}|">Operator</a></td>
-        </tr>
-        </tbody>
-    </table>
+    <ul class="stations">
+        <li class="card station" th:each="s : ${stations}">
+            <h3 th:text="${s.name()}">Station</h3>
+            <p class="addr" th:text="${s.address()}">Address</p>
+            <div class="links">
+                <a class="pill-link" th:href="@{/terminal/{id}(id=${s.id()})}">Terminal<span class="sr-only" th:text="| at ${s.name()}|"></span></a>
+                <a class="pill-link" th:href="@{/operator/{id}(id=${s.id()})}">Operator page<span class="sr-only" th:text="| for ${s.name()}|"></span></a>
+            </div>
+        </li>
+    </ul>
 </main>
 </body>
 </html>

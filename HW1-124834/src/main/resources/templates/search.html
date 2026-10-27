@@ -5,29 +5,37 @@
 <header th:replace="~{fragments :: header}"></header>
 <main>
     <h1>Find a locker</h1>
-    <form method="get" th:action="@{/search}">
+    <p class="lead">Type your address to see the five nearest stations and how many compartments are free.</p>
+
+    <form class="card" method="get" th:action="@{/search}">
         <label for="address">Address</label>
-        <input id="address" name="address" type="text" th:value="${address}" required autocomplete="street-address">
-        <button type="submit">Search</button>
+        <div class="form-row">
+            <input id="address" name="address" type="text" th:value="${address}" required autocomplete="street-address"
+                   placeholder="e.g. Rua de Aveiro 10, Aveiro">
+            <button type="submit">Search</button>
+        </div>
     </form>
 
     <p class="msg error" role="alert" data-testid="search-error" th:if="${error}" th:text="${error}">Error</p>
 
-    <table data-testid="results" th:if="${results != null and !results.isEmpty()}">
-        <caption>Nearest stations and free compartments per size</caption>
-        <thead>
-        <tr><th scope="col">Station</th><th scope="col">Distance</th><th scope="col">Free S</th><th scope="col">Free M</th><th scope="col">Free L</th></tr>
-        </thead>
-        <tbody>
-        <tr th:each="s : ${results}" data-testid="station-row">
-            <td><span th:text="${s.name()}">Station</span><br><small th:text="${s.address()}">Address</small></td>
-            <td th:text="|${#numbers.formatDecimal(s.distanceKm(), 1, 2)} km|">0.00 km</td>
-            <td th:text="${s.freeS()}">0</td>
-            <td th:text="${s.freeM()}">0</td>
-            <td th:text="${s.freeL()}">0</td>
-        </tr>
-        </tbody>
-    </table>
+    <section th:if="${results != null and !results.isEmpty()}" aria-labelledby="results-title">
+        <h2 id="results-title">Nearest stations</h2>
+        <ol class="results" data-testid="results" style="list-style: none; padding: 0; margin: 0;">
+            <li class="card result" th:each="s, it : ${results}" data-testid="station-row">
+                <span class="rank" aria-hidden="true" th:text="${it.count}">1</span>
+                <div>
+                    <div class="name" th:text="${s.name()}">Station</div>
+                    <div class="addr" th:text="${s.address()}">Address</div>
+                </div>
+                <span class="distance" th:text="|${#numbers.formatDecimal(s.distanceKm(), 1, 2)} km|">0.00 km</span>
+                <div class="sizes">
+                    <span th:class="${s.freeS() > 0} ? 'size' : 'size none'" th:text="|Small: ${s.freeS()} free|">Small</span>
+                    <span th:class="${s.freeM() > 0} ? 'size' : 'size none'" th:text="|Medium: ${s.freeM()} free|">Medium</span>
+                    <span th:class="${s.freeL() > 0} ? 'size' : 'size none'" th:text="|Large: ${s.freeL()} free|">Large</span>
+                </div>
+            </li>
+        </ol>
+    </section>
 
     <p class="attribution">Address search by Nominatim. Map data
         <a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>.</p>

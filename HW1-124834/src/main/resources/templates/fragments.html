@@ -3,13 +3,21 @@
 <head th:fragment="head(title)">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="TuttiBox smart parcel lockers: pick a locker station and collect your parcel whenever it suits you.">
     <title th:text="${title}">TuttiBox</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
+<svg th:fragment="logo" class="logo" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+    <rect x="2" y="2" width="28" height="28" rx="7" fill="#0b4f8a"/>
+    <rect x="7" y="7" width="8" height="8" rx="2" fill="#f2a900"/>
+    <rect x="17" y="7" width="8" height="8" rx="2" fill="#ffffff"/>
+    <rect x="7" y="17" width="8" height="8" rx="2" fill="#ffffff"/>
+    <rect x="17" y="17" width="8" height="8" rx="2" fill="#ffffff"/>
+</svg>
 <header class="site" th:fragment="header">
     <nav aria-label="Main">
-        <a th:href="@{/}">TuttiBox</a>
+        <a class="brand" th:href="@{/}"><svg th:replace="~{fragments :: logo}"></svg>TuttiBox</a>
         <a th:href="@{/search}">Find a locker</a>
         <a th:href="@{/track}">Track a parcel</a>
     </nav>
